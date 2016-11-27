@@ -17,8 +17,8 @@ public class SAXParserHandler extends DefaultHandler{
 
     private RssFeedItem feedItem;
     private ArrayList<RssFeedItem> feedsList;
-    boolean currentElement = false;
-    String currentValue ="";
+    private boolean currentElement = false;
+    private String currentValue ="";
 
     public ArrayList<RssFeedItem> getFeedsList()
     {
