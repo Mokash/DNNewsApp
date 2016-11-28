@@ -35,12 +35,12 @@ public class SAXParserHandler extends DefaultHandler{
         }else if(tagName.equalsIgnoreCase("title")) {
             feedItem = new RssFeedItem();
         }
-        Log.i("StartElement", "TAG: " + tagName);
+//        Log.i("StartElement", "TAG: " + tagName);
     }
     public void endElement(String uri, String tagName, String qName) throws SAXException
     {
         currentElement = false;
-        Log.i("EndElement", "TAG: " + tagName);
+//        Log.i("EndElement", "TAG: " + tagName);
         if(tagName.equalsIgnoreCase("title")) {
             feedItem.setTitle(Html.fromHtml(currentValue).toString());
         }else if(tagName.equalsIgnoreCase("link")) {

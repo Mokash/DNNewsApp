@@ -6,6 +6,10 @@ package mo.dnnewsapp;
  */
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Parcel;
+import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +19,10 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class CustomFeedAdapter extends BaseAdapter {
+public class CustomFeedAdapter extends BaseAdapter{
 
     private List<RssFeedItem> RssFeeds = Collections.emptyList();
     private final Context context;
-
 
     public CustomFeedAdapter(Context context) {
         this.context = context;
@@ -36,12 +39,10 @@ public class CustomFeedAdapter extends BaseAdapter {
         return RssFeeds.size();
     }
 
-
     @Override
     public RssFeedItem getItem(int position) {
         return RssFeeds.get(position);
     }
-
 
     @Override
     public long getItemId(int position) {
@@ -62,4 +63,15 @@ public class CustomFeedAdapter extends BaseAdapter {
         return convertView;
 
     }
+
+//    @Override
+//    public void onClick(View v) {
+//        Log.i("CustomFeedAdapter", "onClick ");
+//        int position = (Integer) v.getTag();
+//        RssFeedItem object = (RssFeedItem) getItem(position);
+//        Intent intent = new Intent(this.context, FeedDetailsActivity.class);
+//        intent.putExtra(Constants.KEY_RSSFEEDITEM_OBJECT, object);
+//        Log.i("CustomFeedAdapter", "onClick "+ object.getTitle());
+//        v.getContext().startActivity(intent);
+//    }
 }

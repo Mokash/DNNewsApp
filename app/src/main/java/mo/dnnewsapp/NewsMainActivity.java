@@ -7,10 +7,13 @@ package mo.dnnewsapp;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.net.ConnectivityManager;
@@ -20,8 +23,8 @@ import java.net.URL;
 import java.util.List;
 
 
-public class NewsMainActivity extends AppCompatActivity {
-    private List<RssFeedItem> newsArrayList;
+public class NewsMainActivity extends AppCompatActivity{
+    private List<RssFeedItem> mNewsArrayList;
     private ListView lvDNFeeds;
     private static CustomFeedAdapter customAdapter;
 
@@ -30,6 +33,28 @@ public class NewsMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_main);
         lvDNFeeds = (ListView) findViewById(R.id.lvDNFeeds);
+
+
+        lvDNFeeds.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+                Log.i("item details ", " value: " +position);
+                RssFeedItem object = (RssFeedItem) mNewsArrayList.get(position);
+                Intent intent = new Intent(view.getContext(), FeedDetailsActivity.class);
+                intent.putExtra(Constants.KEY_RSSFEEDITEM_OBJECT, object);
+                Log.i("startActivity", "before  ******");
+                view.getContext().startActivity(intent);
+                Log.i("startActivity", "After ******");
+//                Intent detailsIntent = new Intent(view.getContext(), FeedDetailsActivity.class);
+//                detailsIntent.putExtra(Constants.KEY_ARTICLE_DETAILS, articlesArrayList.get(position).getArticleDetails());
+//                detailsIntent.putExtra(Constants.KEY_ARTICLE_DATE, articlesArrayList.get(position).getaDate());
+//                detailsIntent.putExtra(Constants.KEY_ARTICLE_LINK, articlesArrayList.get(position).getArticleUrlLink());
+//                detailsIntent.putExtra(Constants.KEY_ARTICLE_TITLE, articlesArrayList.get(position).getArticleTitle());
+//                detailsIntent.putExtra(Constants.KEY_ARTICLE_ID, articlesArrayList.get(position).getGuid());
+//                startActivity(detailsIntent);
+            }
+        });
         if (isNetworkAvailable()) {
         // use AsyncTask service to fetch all available Rss feeds from DN Daily Swedish news paper
         // on the background
@@ -45,7 +70,7 @@ public class NewsMainActivity extends AppCompatActivity {
             protected  Void doInBackground(Void... params) {
                 try {
                     InputStream inStream = new URL("http://www.dn.se/nyheter/m/rss/").openStream();
-                    newsArrayList = XmlSAXParser.parse(inStream);
+                    mNewsArrayList = XmlSAXParser.parse(inStream);
                 }catch(Exception e)
                 {
                     Log.i("NewsMainActivity","Parsing Xml file Exception: " + e.getMessage());
@@ -56,7 +81,7 @@ public class NewsMainActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(Void args) {
                 customAdapter = new CustomFeedAdapter(NewsMainActivity.this);
-                customAdapter.updateRssFeed(newsArrayList);
+                customAdapter.updateRssFeed(mNewsArrayList);
                 lvDNFeeds.setAdapter(customAdapter);
                 pd.dismiss();
             }
